@@ -3,6 +3,7 @@
   let password = "";
   let security = "WPA"; // Default to WPA
   let hidden = false;
+  import { handleGenerateQR } from "$lib/stores/navigation";
 
   // Escape special characters for SSID and password
   function escape(str: string) {
@@ -17,6 +18,10 @@
     s += ";";
     return s;
   })();
+
+  function handleGenerate() {
+    handleGenerateQR(qrstring);
+  }
 </script>
 
 <div
@@ -90,15 +95,16 @@
     </div>
 
     <div class="flex justify-end pt-2">
-      <a
-        href={`/style-code?string=${encodeURIComponent(qrstring)}&return-url=${encodeURIComponent(window.location.pathname)}`}
+      <button
+        type="button"
+        onclick={handleGenerate}
         class="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transform hover:scale-105 transition-transform duration-200"
         aria-disabled={!ssid}
         tabindex={!ssid ? -1 : 0}
         style={!ssid ? 'pointer-events: none; opacity: 0.5;' : ''}
       >
         Generate
-      </a>
+      </button>
     </div>
   </div>
 </div>

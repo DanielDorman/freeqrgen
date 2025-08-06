@@ -2,6 +2,12 @@
   let { children } = $props();
   import "../app.css";
   import { ArrowLeft, Home } from "lucide-svelte";
+  import { navigationState, handleBackNavigation } from "$lib/stores/navigation";
+
+  // Get navigation state from store
+  const navigationData = $derived($navigationState);
+  const isRootPath = $derived(navigationData.isRootPath);
+  const canGoBack = $derived(navigationData.canGoBack);
 </script>
 
 <div class="min-h-screen flex flex-col" style="max-height: 100vh;">
@@ -17,8 +23,14 @@
   <div class="flex flex-row flex-wrap gap-3 mb-4">
     <button
       type="button"
-      class="flex items-center space-x-2 px-3 py-1.5 bg-red-600 text-white rounded shadow hover:bg-red-700 transition-colors duration-200"
-      onclick={() => history.back()}
+      class="flex items-center space-x-2 px-3 py-1.5 rounded shadow transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      class:bg-red-600={!isRootPath}
+      class:text-white={!isRootPath}
+      class:hover:bg-red-700={!isRootPath}
+      class:bg-gray-400={isRootPath}
+      class:text-gray-600={isRootPath}
+      disabled={isRootPath}
+      onclick={handleBackNavigation}
     >
       <ArrowLeft class="w-5 h-5 mr-2" />
       <span>Back</span>

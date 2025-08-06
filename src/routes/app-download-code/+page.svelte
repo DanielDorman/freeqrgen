@@ -1,6 +1,7 @@
 <script lang="ts">
   let platform = "Google Play";
   let appId = "";
+  import { handleGenerateQR } from "$lib/stores/navigation";
 
   // Reactive statement to update qrstring whenever platform or appId changes
   $: qrstring = platform === "Google Play"
@@ -11,6 +12,9 @@
     ? `https://apps.apple.com/app/id${appId}`
     : "";
 
+  function handleGenerate() {
+    handleGenerateQR(qrstring);
+  }
 </script>
 
 <div class="p-6 bg-white rounded-2xl shadow-md space-y-6 w-full max-w-lg min-w-lg">
@@ -60,15 +64,16 @@
     </div>
     <div class="mt-4 flex justify-between">
       <div class="flex justify-end w-full">
-        <a
-          href={`/style-code?string=${encodeURIComponent(qrstring)}&return-url=${encodeURIComponent(window.location.pathname)}`}
+        <button
+          type="button"
+          onclick={handleGenerate}
           class="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transform hover:scale-105 transition-transform duration-200"
           aria-disabled={!qrstring}
           tabindex={!qrstring ? -1 : 0}
           style={!qrstring ? 'pointer-events: none; opacity: 0.5;' : ''}
         >
           Generate
-        </a>
+        </button>
       </div>
     </div>
   </div>

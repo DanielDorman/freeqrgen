@@ -3,6 +3,7 @@
   let phone = "";
   let email = "";
   let qrstring = "BEGIN:VCARD\nVERSION:3.0\n{fullName}\nTEL:{phone}\nEMAIL:{email}\nEND:VCARD";
+  import { handleGenerateQR } from "$lib/stores/navigation";
 
   function formatToPhone(input: string): string {
     const digits = input.replace(/\D/g, "").substring(0, 10);
@@ -20,6 +21,10 @@
       phone = "";
     }
     return phone;
+  }
+
+  function handleGenerate() {
+    handleGenerateQR(qrstring);
   }
 </script>
 
@@ -77,12 +82,13 @@
     </div>
 
     <div class="flex justify-end">
-      <a
-        href={`/style-code?string=${encodeURIComponent(qrstring)}&return-url=${encodeURIComponent(window.location.pathname)}`}
+      <button
+        type="button"
+        onclick={handleGenerate}
         class="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transform hover:scale-105 transition-transform duration-200"
       >
         Generate
-      </a>
+      </button>
     </div>
   </div>
 </div>

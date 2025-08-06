@@ -35,7 +35,7 @@
       window.location.href = "/";
     }
   }
-  
+
   //doesn't work kinda shit.
   // if (window.location.origin !== "https://freeqrgen.app") {
   //   if (typeof window !== "undefined") {
@@ -128,7 +128,9 @@
       clearCanvas();
       const options: QROptions = buildQROptions(0, 0);
       qrCodeData = new QRCodeStyling(options);
-      qrCodeData.append(document.getElementById("canvas") || undefined);
+      if(qrCodeData && document.getElementById("canvas")) {
+        qrCodeData.append(document.getElementById("canvas") || undefined);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -142,13 +144,11 @@
     }
   }
 
-  
   onMount(() => {
     generate();
   });
 
- 
-
+  //because why not... But also why?
   $: [
     size,
     dotType,
@@ -166,10 +166,13 @@
     backgroundGradientStart,
     backgroundGradientEnd,
     backgroundGradientRotation,
-  ], generate();
+  ],
+    generate();
 </script>
 
-<div class="flex flex-col items-center md:flex-row justify-center w-full mx-auto mb-8">
+<div
+  class="flex flex-col items-center lg:flex-row justify-center w-full mx-auto mb-8"
+>
   <div class="flex flex-col items-center w-full space-y-4 mb-6">
     <div class="flex flex-col items-center space-y-4">
       <div
@@ -197,12 +200,12 @@
           showCheck = true;
           setTimeout(() => (showCheck = false), 1500);
         }}
-        class="plausible-event-name=qr_code_downloadinline-flex items-center px-5 py-2 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-transform duration-200 font-semibold"
+        class="inline-flex items-center justify-center px-5 py-2 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-transform duration-200 font-semibold"
       >
         {#if showCheck}
           <Check class="w-5 h-5 mr-2 text-white" />
         {:else}
-          <Download class="w-5 h-5 mr-2" />
+          <Download class="w-5 h-5 mr-2 text-white" />
           Download
         {/if}
       </button>
@@ -212,7 +215,7 @@
   <!-- QR Styling Options Controls -->
   <form class="mb-6 bg-white/80 border border-gray-200 rounded-2xl shadow p-4">
     <div class="flex flex-col md:flex-row md:gap-8 gap-6 w-full">
-      <!-- Dot Style --> 
+      <!-- Dot Style -->
       <div class="flex-1 min-w-[180px]">
         <label
           for="dot-style-label"
